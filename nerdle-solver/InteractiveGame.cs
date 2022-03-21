@@ -37,7 +37,7 @@ namespace nerdle_solver
                     Console.WriteLine("Congrats!");
                     return;
                 }
-                options.AddClue(currGuess, result);
+                options.UpdateGuess(currGuess, result);
             }
             Console.WriteLine("Looks like you ran out of guesses. My fault.");
         }

@@ -35,21 +35,21 @@ namespace nerdle_solver
         public long Score(string equation)
             => _dist.Score(equation);
 
-        public void AddClue(string guess, string result)
+        public void UpdateGuess(string guess, string result)
         {
             var newList = new List<string>();
-            foreach (var word in _options)
-                if (IsEquationValid(guess, result, word))
-                    newList.Add(word);
+            foreach (var equation in _options)
+                if (IsEquationValid(guess, result, equation))
+                    newList.Add(equation);
 
             _options = newList;
         }
 
-        public static bool IsEquationValid(string guess, string result, string word)
+        public static bool IsEquationValid(string guess, string result, string equation)
             // Equation is valid if it would generate the same result as the most recent guess
-            => result.Equals(CalcResult(guess, word));
+            => result.Equals(CalcResult(guess, equation));
 
-        public static string CalcResult(string guess, string word)
+        public static string CalcResult(string guess, string equation)
         {
             var result = Enumerable.Repeat('B', EQUATION_LEN).ToArray();
             var remainingLetters = new List<char>();
@@ -57,10 +57,10 @@ namespace nerdle_solver
             // Check for greens first
             for (var x = 0; x < EQUATION_LEN; x++)
             {
-                if (guess[x] == word[x])
+                if (guess[x] == equation[x])
                     result[x] = 'G';
                 else
-                    remainingLetters.Add(word[x]);
+                    remainingLetters.Add(equation[x]);
             }
 
             // Now check for yellows

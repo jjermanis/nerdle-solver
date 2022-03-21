@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace nerdle_solver
 {
@@ -13,15 +12,15 @@ namespace nerdle_solver
 
         private static void Main(string[] args)
         {
-            var words = File.ReadLines(FILE_PATH);
+            var equations = File.ReadLines(FILE_PATH);
 
             var arg = args.Length > 0 ? args[0] : INTERACTIVE_ARG;
 
             switch (arg)
             {
                 case TEST_ARG:
-                    // TODO - implement test mode
-                    throw new Exception("Not supported");
+                    new TestGame(equations).RunTest();
+                    break;
 
                 case GENERATE_EQUATIONS_ARG:
                     new ValidEquationFinder().GenerateEquationFiles();
@@ -29,7 +28,7 @@ namespace nerdle_solver
 
                 case INTERACTIVE_ARG:
                 default:
-                    new InteractiveGame(words).PlayGame();
+                    new InteractiveGame(equations).PlayGame();
                     break;
             }
         }
