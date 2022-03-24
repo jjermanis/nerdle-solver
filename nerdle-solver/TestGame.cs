@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace nerdle_solver
 {
     public class TestGame
     {
         private const int GUESS_COUNT = 6;
-        private readonly IList<string> _equations;
+        private IList<string> _allEquations;
 
-        public TestGame(IEnumerable<string> equations)
+        public TestGame()
         {
-            _equations = equations.ToList();
+            _allEquations = PossibleEquations.GetAllEquations();
         }
 
         public void RunTest()
         {
             int start = Environment.TickCount;
-            Console.WriteLine($"Running test: {_equations.Count} equations");
+            Console.WriteLine($"Running test: {_allEquations.Count} equations");
             var results = new ResultDistribution(GUESS_COUNT);
-            foreach (var equation in _equations)
+            foreach (var equation in _allEquations)
             {
                 var score = PlayGame(equation);
                 if (score.HasValue)
@@ -33,7 +32,7 @@ namespace nerdle_solver
 
         public int? PlayGame(string target)
         {
-            var options = new PossibleEquations(_equations);
+            var options = new PossibleEquations();
 
             for (int i = 0; i < GUESS_COUNT; i++)
             {

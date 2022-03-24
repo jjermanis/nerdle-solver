@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace nerdle_solver
+﻿namespace nerdle_solver
 {
     internal class Program
     {
@@ -8,18 +6,14 @@ namespace nerdle_solver
         private const string TEST_ARG = "-t";
         private const string GENERATE_EQUATIONS_ARG = "-g";
 
-        private const string FILE_PATH = @"..\..\..\equations.txt";
-
         private static void Main(string[] args)
         {
-            var equations = File.ReadLines(FILE_PATH);
-
             var arg = args.Length > 0 ? args[0] : INTERACTIVE_ARG;
-
+ 
             switch (arg)
             {
                 case TEST_ARG:
-                    new TestGame(equations).RunTest();
+                    new TestGame().RunTest();
                     break;
 
                 case GENERATE_EQUATIONS_ARG:
@@ -28,7 +22,7 @@ namespace nerdle_solver
 
                 case INTERACTIVE_ARG:
                 default:
-                    new InteractiveGame(equations).PlayGame();
+                    new InteractiveGame().PlayGame();
                     break;
             }
         }

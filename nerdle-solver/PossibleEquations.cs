@@ -1,20 +1,36 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace nerdle_solver
 {
     public class PossibleEquations
     {
+        private const string FILE_PATH = @"..\..\..\equations.txt";
         private const int EQUATION_LEN = 8;
         private static readonly HashSet<char> VALID_RESULT_CHARS = new HashSet<char> { 'G', 'P', 'B' };
-        private readonly LetterDistribution _dist;
-        private List<string> _options;
 
-        public PossibleEquations(IEnumerable<string> equations)
+        private static readonly LetterDistribution _startDist;
+        private static readonly IList<string> _startEquations;
+
+        private LetterDistribution _dist;
+        private IList<string> _options;
+
+        static PossibleEquations()
         {
-            _dist = new LetterDistribution(equations);
-            _options = equations.OrderByDescending(w => Score(w)).ToList();
+            var equations = File.ReadLines(FILE_PATH);
+            _startDist = new LetterDistribution(equations);
+            _startEquations = equations.OrderByDescending(w => Score(_startDist, w)).ToList();
         }
+
+        public PossibleEquations()
+        {
+            _dist = _startDist;
+            _options = _startEquations;
+        }
+
+        public static IList<string> GetAllEquations()
+            => _startEquations;
 
         public string BestGuess()
             => _options.FirstOrDefault();
@@ -32,8 +48,8 @@ namespace nerdle_solver
             return true;
         }
 
-        public long Score(string equation)
-            => _dist.Score(equation);
+        private static long Score(LetterDistribution dist, string equation)
+            => dist.Score(equation);
 
         public void UpdateGuess(string guess, string result)
         {
@@ -46,8 +62,16 @@ namespace nerdle_solver
         }
 
         public static bool IsEquationValid(string guess, string result, string equation)
+        {
+            // Optimization: do a simple check first. For each char, if the result is G, they
+            // need to match, and if the result isn't G, they need to NOT match.
+            for (int x = 0; x < 8; x++)
+                if ((result[x] == 'G') == (guess[x] != equation[x]))
+                    return false;
+
             // Equation is valid if it would generate the same result as the most recent guess
-            => result.Equals(CalcResult(guess, equation));
+            return result.Equals(CalcResult(guess, equation));
+        }
 
         public static string CalcResult(string guess, string equation)
         {

@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace nerdle_solver
 {
     internal class InteractiveGame
     {
-        private readonly IEnumerable<string> _equations;
-
-        public InteractiveGame(IEnumerable<string> equations)
-        {
-            _equations = equations;
-        }
-
         public void PlayGame()
         {
-            var options = new PossibleEquations(_equations);
+            var options = new PossibleEquations();
             Console.WriteLine("Welcome to nerdle-solver. This program will help you solve the daily Nerdle puzzle.");
             Console.WriteLine("To use, guess what this program suggests. Then, let this program know the result.");
             Console.WriteLine("Enter the eight colors from the result. G for green, P for purple, and B for black.");
