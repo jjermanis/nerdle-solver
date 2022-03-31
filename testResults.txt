@@ -26,3 +26,18 @@ Win Rate: 99.977%
 Average: 3.207
 Score: 3.209
 Time: 26063 ms
+
+
+3/23/22
+Running test: 17723 equations
+1: 1
+2: 1602
+3: 11114
+4: 4761
+5: 212
+6: 27
+Misses: 4
+Win Rate: 99.977%
+Average: 3.207
+Score: 3.209
+Time: 6015 ms
